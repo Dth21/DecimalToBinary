@@ -1,11 +1,12 @@
 var list = [1];
+var reversedList = [];
+
+let programRunTimes = 0;
+let programRunClass = 0;
+
 let multipliersDiv = document.getElementById("multipliers");
 let number = document.getElementById("userInput");
-let lastNumber = 0;
-let numbersDiv = document.getElementById("binary-code");
-let programRunTimes = 0;
-let body = document.getElementById("body");
-let programRunClass = 0;
+let binaryCodeDiv = document.getElementById("binary-code");
 
 /*
 if there is not user input show then show error
@@ -31,13 +32,26 @@ function calculate() {
 
 function createArray() {
   list = [1];
+  reversedList = [];
   let double = 1;
 
   do {
     double = double * 2;
     list.push(double);
   } while (double < number.value);
-  lastNumber = list[list.length - 1];
+  let lastNumberInList = list[list.length - 1];
+
+  for (let q = list.length - 1; q > 0; q--) {
+    reversedList.push(list[q]);
+  }
+  reversedList.push(1);
+
+  /* for (let a = 0; a <= reversedList.length - 1; a++) {
+    console.log(a, reversedList[a]);
+  }
+    
+    Just for testing purposes
+    */
 }
 
 function showArray() {
@@ -48,9 +62,9 @@ function showArray() {
     "style",
     "  width: 100%; display: flex; flex-direction: row; align-content: center; justify-content: space-evenly; align-items: center;"
   );
-  for (let i = 0; i < list.length; i++) {
+  for (let i = 0; i < reversedList.length; i++) {
     let numberDiv = document.createElement("div");
-    numberDiv.innerText = list[i];
+    numberDiv.innerText = reversedList[i];
     numberDiv.setAttribute("class", "number-" + i);
     programRunDiv.appendChild(numberDiv);
   }
@@ -66,9 +80,9 @@ function replaceArray() {
     "style",
     "  width: 100%; display: flex; flex-direction: row; align-content: center; justify-content: space-evenly; align-items: center;"
   );
-  for (let j = 0; j < list.length; j++) {
+  for (let j = 0; j < reversedList.length; j++) {
     let newNumberDiv = document.createElement("div");
-    newNumberDiv.innerText = list[j];
+    newNumberDiv.innerText = reversedList[j];
     newNumberDiv.setAttribute("class", "number-" + j);
     newProgramRunDiv.appendChild(newNumberDiv);
   }
