@@ -1,17 +1,18 @@
 var list = [1];
 var reversedList = [];
+var resultsArray = [];
+var differenceArray = [];
 
 let programRunTimes = 0;
 let programRunClass = 0;
+let secondaryArrayRunClass = 0;
+let secondaryArrayRunTimes = 0;
+let result = 0;
+let difference = 0;
 
 let multipliersDiv = document.getElementById("multipliers");
 let number = document.getElementById("userInput");
 let binaryCodeDiv = document.getElementById("binary-code");
-
-/*
-if there is not user input show then show error
-if there is user input, hide error and run program
-*/
 
 function calculate() {
   if (number.value === "") {
@@ -19,13 +20,18 @@ function calculate() {
     error.innerText = "Please input a number";
   } else {
     error.style.visibility = "hidden";
+
+    createArray();
+    createSecondArray();
+
     if (programRunTimes < 1) {
-      createArray();
       showArray();
+      showSecondArray();
       programRunTimes++;
+      secondaryArrayRunTimes++;
     } else {
-      createArray();
       replaceArray();
+      replaceSecondArray();
     }
   }
 }
@@ -39,19 +45,31 @@ function createArray() {
     double = double * 2;
     list.push(double);
   } while (double < number.value);
-  let lastNumberInList = list[list.length - 1];
 
   for (let q = list.length - 1; q > 0; q--) {
     reversedList.push(list[q]);
   }
   reversedList.push(1);
+}
 
-  /* for (let a = 0; a <= reversedList.length - 1; a++) {
-    console.log(a, reversedList[a]);
+function createSecondArray() {
+  resultsArray = [];
+  differenceArray = [];
+  for (let b = 0; b < reversedList.length; b++) {
+    if (reversedList[b] <= number.value) {
+      result = 1;
+    } else {
+      result = 0;
+    }
+    if (result === 1) {
+      difference = number.value - reversedList[b];
+      number.value = difference;
+    } else {
+      difference = number.value;
+    }
+    resultsArray.push(result);
+    differenceArray.push(difference);
   }
-    
-    Just for testing purposes
-    */
 }
 
 function showArray() {
@@ -88,6 +106,46 @@ function replaceArray() {
   }
   programRunClass++;
   multipliersDiv.replaceChild(newProgramRunDiv, oldProgramRunDiv);
+}
+
+function showSecondArray() {
+  console.log(secondaryArrayRunTimes);
+  secondaryArrayRunClass = secondaryArrayRunTimes;
+  let secondaryArrayRunDiv = document.createElement("div");
+  secondaryArrayRunDiv.setAttribute("id", secondaryArrayRunClass);
+  secondaryArrayRunDiv.setAttribute(
+    "style",
+    "  width: 100%; display: flex; flex-direction: row; align-content: center; justify-content: space-evenly; align-items: center;"
+  );
+  for (let g = 0; g < resultsArray.length; g++) {
+    let resultsDiv = document.createElement("div");
+    resultsDiv.innerText = resultsArray[g] + " ( " + differenceArray[g] + " )";
+    resultsDiv.setAttribute("class", "binaryCode-" + g);
+    secondaryArrayRunDiv.appendChild(resultsDiv);
+  }
+  binaryCodeDiv.appendChild(secondaryArrayRunDiv);
+}
+
+function replaceSecondArray() {
+  let oldSecondaryArrayRunDiv = document.getElementById(secondaryArrayRunClass);
+  let newSecondaryArrayRunDiv = document.createElement("div");
+  let newSecondaryArrayRunClass = secondaryArrayRunClass + 1;
+  newSecondaryArrayRunDiv.setAttribute("id", newSecondaryArrayRunClass);
+  newSecondaryArrayRunDiv.setAttribute(
+    "style",
+    "  width: 100%; display: flex; flex-direction: row; align-content: center; justify-content: space-evenly; align-items: center;"
+  );
+
+  for (let p = 0; p < resultsArray.length; p++) {
+    let newSecondaryResultsDiv = document.createElement("div");
+    newSecondaryResultsDiv.innerText =
+      resultsArray[p] + " ( " + differenceArray[p] + " )";
+    newSecondaryResultsDiv.setAttribute("class", "binaryCode-" + p);
+    newSecondaryArrayRunDiv.appendChild(newSecondaryResultsDiv);
+  }
+
+  secondaryArrayRunClass++;
+  binaryCodeDiv.replaceChild(newSecondaryArrayRunDiv, oldSecondaryArrayRunDiv);
 }
 
 function resetPage() {
