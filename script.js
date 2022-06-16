@@ -15,6 +15,7 @@ let number = document.getElementById("userInput");
 let binaryCodeDiv = document.getElementById("binary-code");
 
 function calculate() {
+  // checks if there is a value to be calculated
   if (number.value === "") {
     error.style.visibility = "visible";
     error.innerText = "Please input a number";
@@ -24,6 +25,7 @@ function calculate() {
     createArray();
     createSecondArray();
 
+    // both divs need to be modified at user input, so the first time it creates the divs, and the second time it replaces the already existent divs
     if (programRunTimes < 1) {
       showArray();
       showSecondArray();
@@ -36,6 +38,7 @@ function calculate() {
   }
 }
 
+// it creates the first set of values based on this formula: b=a*2 and then it reverses the list for show
 function createArray() {
   list = [1];
   reversedList = [];
@@ -46,23 +49,23 @@ function createArray() {
     list.push(double);
   } while (double < number.value);
 
-  for (let q = list.length - 1; q > 0; q--) {
-    reversedList.push(list[q]);
+  for (let caRunner = list.length - 1; caRunner >= 0; caRunner--) {
+    reversedList.push(list[caRunner]);
   }
-  reversedList.push(1);
 }
 
+// it calculates the binary code
 function createSecondArray() {
   resultsArray = [];
   differenceArray = [];
-  for (let b = 0; b < reversedList.length; b++) {
-    if (reversedList[b] <= number.value) {
+  for (let csaRunner = 0; csaRunner < reversedList.length; csaRunner++) {
+    if (reversedList[csaRunner] <= number.value) {
       result = 1;
     } else {
       result = 0;
     }
     if (result === 1) {
-      difference = number.value - reversedList[b];
+      difference = number.value - reversedList[csaRunner];
       number.value = difference;
     } else {
       difference = number.value;
@@ -72,6 +75,7 @@ function createSecondArray() {
   }
 }
 
+// displays the first div
 function showArray() {
   programRunClass = programRunTimes;
   let programRunDiv = document.createElement("div");
@@ -80,34 +84,16 @@ function showArray() {
     "style",
     "  width: 100%; display: flex; flex-direction: row; align-content: center; justify-content: space-evenly; align-items: center;"
   );
-  for (let i = 0; i < reversedList.length; i++) {
+  for (let saRunner = 0; saRunner < reversedList.length; saRunner++) {
     let numberDiv = document.createElement("div");
-    numberDiv.innerText = reversedList[i];
-    numberDiv.setAttribute("class", "number-" + i);
+    numberDiv.innerText = reversedList[saRunner];
+    numberDiv.setAttribute("class", "number-" + saRunner);
     programRunDiv.appendChild(numberDiv);
   }
   multipliersDiv.appendChild(programRunDiv);
 }
 
-function replaceArray() {
-  let oldProgramRunDiv = document.getElementById(programRunClass);
-  let newProgramRunDiv = document.createElement("div");
-  let newProgramRunClass = programRunClass + 1;
-  newProgramRunDiv.setAttribute("id", newProgramRunClass);
-  newProgramRunDiv.setAttribute(
-    "style",
-    "  width: 100%; display: flex; flex-direction: row; align-content: center; justify-content: space-evenly; align-items: center;"
-  );
-  for (let j = 0; j < reversedList.length; j++) {
-    let newNumberDiv = document.createElement("div");
-    newNumberDiv.innerText = reversedList[j];
-    newNumberDiv.setAttribute("class", "number-" + j);
-    newProgramRunDiv.appendChild(newNumberDiv);
-  }
-  programRunClass++;
-  multipliersDiv.replaceChild(newProgramRunDiv, oldProgramRunDiv);
-}
-
+// displays div with the result, in this case the binary code
 function showSecondArray() {
   console.log(secondaryArrayRunTimes);
   secondaryArrayRunClass = secondaryArrayRunTimes;
@@ -117,15 +103,37 @@ function showSecondArray() {
     "style",
     "  width: 100%; display: flex; flex-direction: row; align-content: center; justify-content: space-evenly; align-items: center;"
   );
-  for (let g = 0; g < resultsArray.length; g++) {
+  for (let ssaRunner = 0; ssaRunner < resultsArray.length; ssaRunner++) {
     let resultsDiv = document.createElement("div");
-    resultsDiv.innerText = resultsArray[g] + " ( " + differenceArray[g] + " )";
-    resultsDiv.setAttribute("class", "binaryCode-" + g);
+    resultsDiv.innerText =
+      resultsArray[ssaRunner] + " ( " + differenceArray[ssaRunner] + " )";
+    resultsDiv.setAttribute("class", "binaryCode-" + ssaRunner);
     secondaryArrayRunDiv.appendChild(resultsDiv);
   }
   binaryCodeDiv.appendChild(secondaryArrayRunDiv);
 }
 
+// replace first div
+function replaceArray() {
+  let oldProgramRunDiv = document.getElementById(programRunClass);
+  let newProgramRunDiv = document.createElement("div");
+  let newProgramRunClass = programRunClass + 1;
+  newProgramRunDiv.setAttribute("id", newProgramRunClass);
+  newProgramRunDiv.setAttribute(
+    "style",
+    "  width: 100%; display: flex; flex-direction: row; align-content: center; justify-content: space-evenly; align-items: center;"
+  );
+  for (let raRunner = 0; raRunner < reversedList.length; raRunner++) {
+    let newNumberDiv = document.createElement("div");
+    newNumberDiv.innerText = reversedList[raRunner];
+    newNumberDiv.setAttribute("class", "number-" + raRunner);
+    newProgramRunDiv.appendChild(newNumberDiv);
+  }
+  programRunClass++;
+  multipliersDiv.replaceChild(newProgramRunDiv, oldProgramRunDiv);
+}
+
+// replace the second div with the new calculated values
 function replaceSecondArray() {
   let oldSecondaryArrayRunDiv = document.getElementById(secondaryArrayRunClass);
   let newSecondaryArrayRunDiv = document.createElement("div");
@@ -136,11 +144,11 @@ function replaceSecondArray() {
     "  width: 100%; display: flex; flex-direction: row; align-content: center; justify-content: space-evenly; align-items: center;"
   );
 
-  for (let p = 0; p < resultsArray.length; p++) {
+  for (let rsaRunner = 0; rsaRunner < resultsArray.length; rsaRunner++) {
     let newSecondaryResultsDiv = document.createElement("div");
     newSecondaryResultsDiv.innerText =
-      resultsArray[p] + " ( " + differenceArray[p] + " )";
-    newSecondaryResultsDiv.setAttribute("class", "binaryCode-" + p);
+      resultsArray[rsaRunner] + " ( " + differenceArray[rsaRunner] + " )";
+    newSecondaryResultsDiv.setAttribute("class", "binaryCode-" + rsaRunner);
     newSecondaryArrayRunDiv.appendChild(newSecondaryResultsDiv);
   }
 
